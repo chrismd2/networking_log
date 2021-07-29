@@ -13,7 +13,7 @@ defmodule NetworkingLog.Nodes.Event do
     many_to_many :places,     Nodes.Place, join_through: "places"
     many_to_many :groups,     Nodes.Group, join_through: "groups"
     many_to_many :people,     Nodes.Person, join_through: "people"
-    # many_to_many :note,       Nodes.Note, join_through: "note"
+    many_to_many :note,       Nodes.Note, join_through: "note"
 
     timestamps()
   end
