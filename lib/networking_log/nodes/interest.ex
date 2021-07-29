@@ -18,7 +18,7 @@ defmodule NetworkingLog.Nodes.Interest do
 
   def changeset(person, attrs) do
     person
-    |> cast(attrs, [:name, :people, :places, :groups, :events, :notes])
+    |> cast(attrs, [:name])#, :people, :places, :groups, :events, :notes])
     |> validate_required([:name])
   end
 end

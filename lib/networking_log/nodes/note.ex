@@ -19,7 +19,7 @@ defmodule NetworkingLog.Nodes.Note do
 
   def changeset(note, attrs) do
     note
-    |> cast(attrs, [:text, :people, :notes, :interests, :places, :groups, :events])
+    |> cast(attrs, [:text])#, :people, :notes, :interests, :places, :groups, :events])
     |> validate_required([:text])
   end
 end

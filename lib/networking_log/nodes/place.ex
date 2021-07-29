@@ -19,7 +19,7 @@ defmodule NetworkingLog.Nodes.Place do
 
   def changeset(person, attrs) do
     person
-    |> cast(attrs, [:location, :name, :notes, :interests, :people, :groups, :events])
+    |> cast(attrs, [:location, :name])#, :notes, :interests, :people, :groups, :events])
     |> validate_required([:location, :name])
   end
 end

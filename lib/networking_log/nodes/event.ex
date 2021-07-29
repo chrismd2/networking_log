@@ -22,7 +22,7 @@ defmodule NetworkingLog.Nodes.Event do
 
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:name, :date, :time, :location, :interests, :groups, :people, :notes])
+    |> cast(attrs, [:name, :date, :time, :location])#, :interests, :groups, :people, :notes])
     |> validate_required([:name, :location])
   end
 end
