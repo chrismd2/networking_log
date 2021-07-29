@@ -10,32 +10,32 @@ defmodule NetworkingLog.Nodes do
     case type do
       "event" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       "group" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       "interest" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       "note" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       "person" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       "place" ->
         if data == [] do
-          IO.write("Need data")
+          IO.write("Need data, should be a key value list")
         else
         end
       _ ->  IO.write("invalid type: #{type}\n")
