@@ -8,7 +8,7 @@ defmodule NetworkingLog.Nodes.Note do
     field :text,              :string
 
     many_to_many :people,     Nodes.Person, join_through: "people"
-    many_to_many :note,       Nodes.Note, join_through: "note"
+    many_to_many :notes,      Nodes.Note, join_through: "notes"
     many_to_many :interests,  Nodes.Interest, join_through: "interests"
     many_to_many :places,     Nodes.Place, join_through: "places"
     many_to_many :groups,     Nodes.Group, join_through: "groups"
@@ -19,7 +19,7 @@ defmodule NetworkingLog.Nodes.Note do
 
   def changeset(note, attrs) do
     note
-    |> cast(attrs, [:text])
+    |> cast(attrs, [:text, :people, :notes, :interests, :places, :groups, :events])
     |> validate_required([:text])
   end
 end

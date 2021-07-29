@@ -6,8 +6,9 @@ defmodule NetworkingLog.Nodes.Place do
 
   schema "places" do
     field :location,         :string
+    field :name,             :string
 
-    many_to_many :note,      Nodes.Note, join_through: "note"
+    many_to_many :notes,     Nodes.Note, join_through: "note"
     many_to_many :interests, Nodes.Interest, join_through: "interests"
     many_to_many :people,    Nodes.Person, join_through: "people"
     many_to_many :groups,    Nodes.Group, join_through: "groups"
@@ -18,7 +19,7 @@ defmodule NetworkingLog.Nodes.Place do
 
   def changeset(person, attrs) do
     person
-    |> cast(attrs, [:location])
-    |> validate_required([:location])
+    |> cast(attrs, [:location, :name, :notes, :interests, :people, :groups, :events])
+    |> validate_required([:location, :name])
   end
 end

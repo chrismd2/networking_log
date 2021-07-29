@@ -7,7 +7,7 @@ defmodule NetworkingLog.Repo.Migrations.AlterPeople do
       add :groups,    references(:groups)
       add :interests, references(:interests)
       add :events,    references(:events)
-      add :note,      references(:notes)
+      add :notes,      references(:notes)
     end
   end
 end

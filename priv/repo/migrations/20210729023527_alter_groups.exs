@@ -5,7 +5,7 @@ defmodule NetworkingLog.Repo.Migrations.AlterGroups do
     alter table(:groups) do
       add :interests, references(:interests)
       add :events,    references(:events)
-      add :note,      references(:notes)
+      add :notes,     references(:notes)
     end
   end
 end
