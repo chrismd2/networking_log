@@ -8,7 +8,7 @@ defmodule NetworkingLog.Repo.Migrations.AddEvents do
       add :time,      :string
 
       add :interests, references(:interests)
-      add :places,    references(:places)
+      add :location,   references(:places)
       add :groups,    references(:groups)
       add :people,    references(:people)
       # add :note,      references(:notes)
