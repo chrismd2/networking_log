@@ -6,11 +6,6 @@ defmodule NetworkingLog.Repo.Migrations.AddNotes do
       add :text,      :string
 
       add :people,    references(:people)
-      add :notes,     references(:notes)
-      add :interests, references(:interests)
-      add :places,    references(:places)
-      add :groups,    references(:groups)
-      add :events,    references(:events)
 
       timestamps()
     end
