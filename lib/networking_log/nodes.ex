@@ -188,8 +188,11 @@ defmodule NetworkingLog.Nodes do
   def create_person_notes(person, note = %{text: text}) do
     people = read_person(person)
     notes = read_note(note)
+    [n_record] = notes
 
-    Note.changeset(note, people)
+    n_record
+    |> Repo.preload(:people)
+    |> Note.changeset_assoc(people)
     |> Repo.update
     # # IO.inspect(people, label: "people from read")
     # [p_record] = people
@@ -266,10 +269,10 @@ defmodule NetworkingLog.Nodes do
   def working do
     [person, person2, note, note2] = @testing_values
 
-    create_person_notes(person, note)
-    # create_person_notes(person2, note2)
-    # create_person_notes(person2, note)
-    # create_person_notes(person, note2)
+    # create_person_notes(person, note)
+    create_person_notes(person2, note2)
+    create_person_notes(person2, note)
+    create_person_notes(person, note2)
 
     # delete_person_notes(person2, note)
 

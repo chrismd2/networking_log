@@ -17,11 +17,11 @@ defmodule NetworkingLog.Nodes.Note do
     timestamps()
   end
 
-  # def changeset(struct, params) when(is_list(params)) do
-  #   struct
-  #   |> cast(%{}, [:text])
-  #   |> put_assoc(:people, params)
-  # end
+  def changeset_assoc(struct, params) when(is_list(params)) do
+    struct
+    |> cast(%{}, [])
+    |> put_assoc(:people, params)
+  end
   def changeset(struct, params = %{}) do
     struct
     |> cast(params, [:text])
