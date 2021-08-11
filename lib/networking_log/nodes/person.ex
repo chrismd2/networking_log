@@ -19,25 +19,7 @@ defmodule NetworkingLog.Nodes.Person do
     |> cast(params, [:name, :phone, :email])
     |> cast_assoc(
       :notes,
-      required: true
+      required: false
     )
-  end
-
-  def changeset(person, notes) when(is_list(notes)) do
-    # default_val = %{notes: "none"}
-    # Map.merge(attrs, default_val)
-    IO.inspect(notes, label: "notes in changeset")
-    person
-    |> cast(%{}, [:name, :phone, :email])#, :notes, :interests, :places, :groups, :events])
-    |> unique_constraint(:name, name: :name)
-    |> validate_required([:name])
-    |> put_assoc(:notes, notes)
-  end
-
-  def changeset(person, attrs) do
-    person
-    |> cast(attrs, [:name, :phone, :email])#, :notes, :interests, :places, :groups, :events])
-    |> validate_required([:name])
-    |> unique_constraint(:name, name: :name)
   end
 end

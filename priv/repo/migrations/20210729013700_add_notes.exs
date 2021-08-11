@@ -5,8 +5,6 @@ defmodule NetworkingLog.Repo.Migrations.AddNotes do
     create table(:notes) do
       add :text,      :string
 
-      add :people,    references(:people)
-
       timestamps()
     end
   end

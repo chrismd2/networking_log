@@ -17,32 +17,17 @@ defmodule NetworkingLog.Nodes.Note do
     timestamps()
   end
 
+  # def changeset(struct, params) when(is_list(params)) do
+  #   struct
+  #   |> cast(%{}, [:text])
+  #   |> put_assoc(:people, params)
+  # end
   def changeset(struct, params = %{}) do
     struct
     |> cast(params, [:text])
     |> cast_assoc(
       :people,
-      required: true
+      required: false
     )
-  end
-
-  def changeset(note, people) when(is_list(people)) do
-    IO.write("\n\nFLAG\n\n")
-    IO.inspect(people, label: "people in changeset")
-    IO.inspect(note, label: "note in changeset")
-    # default_val = %{people: "none"}
-    # Map.merge(attrs, default_val)
-    note
-    |> cast(%{}, [:text])#, :people, :notes, :interests, :places, :groups, :events])
-    # |> unique_constraint(:text, name: :text)
-    # |> validate_required([:text])
-    |> put_assoc(:people, people, join_through: "person_to_notes", on_replace: :delete)
-  end
-
-  def changeset(note, attrs) do
-    note
-    |> cast(attrs, [:text])#, :people, :notes, :interests, :places, :groups, :events])
-    |> unique_constraint(:text, name: :text)
-    |> validate_required([:text])
   end
 end

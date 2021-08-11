@@ -8,9 +8,5 @@ defmodule NetworkingLog.Repo.Migrations.AddTablePeopleToNotes do
 
       # timestamps()
     end
-
-    create(index(:person_to_notes, [:note_id]))
-    create(index(:person_to_notes, [:person_id]))
-    create unique_index(:person_to_notes, [:note_id, :person_id])
   end
 end

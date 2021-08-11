@@ -146,6 +146,7 @@ defmodule NetworkingLog.Nodes do
     else
       [record | _tail] = read_person(data)
       Person.changeset(record, %{})
+      |> preload(:notes)
       |> Repo.delete
     end
   end
@@ -188,14 +189,24 @@ defmodule NetworkingLog.Nodes do
   def create_person_notes(person, note = %{text: text}) do
     people = read_person(person)
     notes = read_note(note)
-    # IO.inspect(people, label: "people from read")
-    [p_record] = people
-    [n_record] = notes
 
-    n_record
-    |> Repo.preload(:people)
-    |> Note.changeset(people)
+    Note.changeset(note, people)
     |> Repo.update
+    # # IO.inspect(people, label: "people from read")
+    # [p_record] = people
+    # p_record = Repo.preload(p_record, :notes)
+    # # p_record.id
+    # # p_record
+    # # |> Repo.preload(:notes)
+    # # |> Person.changeset(%{})
+    # # |> Repo.update
+    # [n_record] = notes
+    # n_record = Repo.preload(n_record, :people)
+    #
+    # n_record = n_record
+    # |> Repo.preload(:people)
+    # |> Note.changeset(%{note_id: n_record.id, people: [people]})
+    # |> Repo.update
   end
   def read_person_notes(person, notes = %{text: text})  do
     [p_record] = read_person(person)
@@ -218,25 +229,45 @@ defmodule NetworkingLog.Nodes do
     # |> Repo.delete
   end
 
-  def tester do
-    person = %{name: "will"}
-    create_person(person)
-    |> IO.inspect(label: "person")
-    # update_person(person, Map.put(person, :phone, "7777777777"))
 
-    person2 = %{name: "bilbo"}
+
+############################TESTING############################
+
+@testing_values [
+                  %{name: "will"},
+                  %{name: "bilbo"},
+                  %{text: "boxer"},
+                  %{text: "walking"}
+                 ]
+
+
+
+  def setup do
+    [person, person2, note, note2] = @testing_values
+    create_person(person)
+    read_person(person)
+    |> IO.inspect(label: "person")
+
     create_person(person2)
+    update_person(person2, Map.put(person2, :phone, "7777777777"))
     |> IO.inspect(label: "person 2")
 
-    note = %{text: "boxer"}
     create_note(note)
+    read_note(note)
     |> IO.inspect(label: "note")
 
-    note2 = %{text: "walking"}
-    create_note(note2)
+    bad_note = %{text: "walking!"}
+    create_note(bad_note)
+    update_note(bad_note, note2)
     |> IO.inspect(label: "note 2")
 
-    # create_person_notes(person, note)
+    :done
+  end
+
+  def working do
+    [person, person2, note, note2] = @testing_values
+
+    create_person_notes(person, note)
     # create_person_notes(person2, note2)
     # create_person_notes(person2, note)
     # create_person_notes(person, note2)
@@ -248,9 +279,21 @@ defmodule NetworkingLog.Nodes do
     # |> Repo.update
 
     # IO.inspect(read_person_notes(person, note), label: "reading person notes 1")
+  end
 
-    # delete_person(person2)
-    # delete_person(person)
-    # delete_note(note)
+  def teardown do
+    [person, person2, note, note2] = @testing_values
+    delete_person(person2)
+    delete_person(person)
+    delete_note(note2)
+    delete_note(note)
+
+    :done
+  end
+
+  def tester do
+    setup()
+    working()
+    teardown()
   end
 end
