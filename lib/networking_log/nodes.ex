@@ -146,7 +146,6 @@ defmodule NetworkingLog.Nodes do
     else
       [record | _tail] = read_person(data)
       Person.changeset(record, %{})
-      |> preload(:notes)
       |> Repo.delete
     end
   end
