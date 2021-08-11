@@ -1,10 +1,7 @@
 defmodule NetworkingLog.Nodes do
-  alias NetworkingLog.Nodes.Event
-  alias NetworkingLog.Nodes.Group
-  alias NetworkingLog.Nodes.Interest
   alias NetworkingLog.Nodes.Note
   alias NetworkingLog.Nodes.Person
-  alias NetworkingLog.Nodes.Place
+  alias NetworkingLog.Nodes.PersonToNotes
   alias NetworkingLog.Repo
 
   import Ecto.Query
@@ -12,237 +9,13 @@ defmodule NetworkingLog.Nodes do
   def add(data) do
     Repo.insert(data)
   end
-  def add(type, data \\ %{}) do
-    case type do
-      "event" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Event{}
-          |> Event.changeset(data)
-          |> Repo.insert
-        end
-      "group" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Group{}
-          |> Group.changeset(data)
-          |> Repo.insert
-        end
-      "interest" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Interest{}
-          |> Interest.changeset(data)
-          |> Repo.insert
-        end
-      "note" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Note{}
-          |> Note.changeset(data)
-          |> Repo.insert
-        end
-      "person" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Person{}
-          |> Person.changeset(data)
-          |> Repo.insert
-        end
-      "place" ->
-        if data == %{} do
-          IO.write("Need data, should be a map")
-        else
-          data = build(data)
-          %Place{}
-          |> Place.changeset(data)
-          |> Repo.insert
-        end
-      _ ->  IO.write("invalid type: #{type}\n")
-            IO.write("\ttry:\tevent\tgroup\tinterest\n")
-            IO.write("\t\tnote\tperson\tplace\n")
-    end
+  def get_note(data = %{text: value}) when is_binary(value) do
+    [record] = read_note(data)
+    record
   end
-  def get_interests(_data = %{interests: value}) when is_binary(value) do
-    Repo.get_by(Interest, name: value)
-  end
-  defp get_location(_data = %{location: value}) when is_binary(value) do
-    Repo.get_by(Location, name: value)
-  end
-  defp get_notes(_data = %{notes: value}) when is_binary(value) do
-    Repo.get_by(Note, text: value)
-  end
-  def get_people(_data = %{people: value}) when is_binary(value) do
-    Repo.get_by(Person, name: value)
-  end
-  def get_person(_data = %{name: value, interests: interests}) when is_binary(value) do
-    Repo.get_by(Person, name: value, interests: interests)
-  end
-  def get_person(_data = %{name: value}) when is_binary(value) do
-    Repo.get_by(Person, name: value)
-  end
-  defp get_groups(_data = %{groups: value}) when is_binary(value) do
-    Repo.get_by(Group, name: value)
-  end
-  defp get_events(_data = %{events: value}) when is_binary(value) do
-    Repo.get_by(Event, name: value)
-  end
-
-  ##  These following get_by statements are a bit more complicated and need
-  ##  to be more robust, using the given value
-  # defp get_text(_data = %{text: value}) when is_binary(value) do
-  #   Repo.get_by(Note, text: value)
-  # end
-  # defp get_phone(_data = %{phone: value}) when is_binary(value) do
-  #   Repo.get_by(Person, name: value)
-  # end
-  # defp get_email(_data = %{email: value}) when is_binary(value) do
-  #   Repo.get_by(Person, name: value)
-  # end
-  # defp get_website(_data = %{website: value}) when is_binary(value) do
-  #   Repo.get_by(Group, text: value)
-  # end
-  # defp get_date(_data = %{date: value}) when is_binary(value) do
-  #   Repo.get_by(Event, name: value)
-  # end
-  # defp get_time(_data = %{time: value}) when is_binary(value) do
-  #   Repo.get_by(Event, name: value)
-  # end
-  def build(data = %{interests: value}) when is_binary(value) do
-    Map.update(data, :interests, value, fn eV -> eV = get_interests(data) end)
-  end
-  def build(data = %{interests: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Interest,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :interests, value, fn ev -> ev = results end)
-  end
-  def build(data = %{location: value}) when is_binary(value) do
-    Map.update(data, :location, value, fn eV -> eV = get_interests(data) end)
-  end
-  def build(data = %{location: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Location,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :location, value, fn ev -> ev = results end)
-  end
-  def build(data = %{notes: value}) when is_binary(value) do
-    Map.update(data, :notes, value, fn eV -> eV = get_interests(data) end)
-  end
-  def build(data = %{notes: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Note,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :notes, value, fn ev -> ev = results end)
-  end
-  def build(data = %{people: value}) when is_binary(value) do
-    Map.update(data, :people, value, fn eV -> eV = get_people(data) end)
-  end
-  def build(data = %{people: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Person,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :people, value, fn ev -> ev = results end)
-  end
-  # def build(data = %{name: value}) when is_binary(value) do
-  #   Map.update(data, :name, value, fn eV -> eV = get_person(data) end)
-  # end
-  # def build(data = %{name: value = [h|_]}) when is_list(value) do
-  #   if is_binary(h) do
-  #     results = from(
-  #       i in Person,
-  #       where: i.name in ^value,
-  #       select: i
-  #     )
-  #     |> Repo.all
-  #     Map.update(data, :name, value, fn ev -> ev = results end)
-  #   else
-  #     IO.write("WARNING: tried to build a non string\n")
-  #     data
-  #   end
-  # end
-  def build(data = %{groups: value}) when is_binary(value) do
-    Map.update(data, :groups, value, fn eV -> eV = get_groups(data) end)
-  end
-  def build(data = %{groups: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Group,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :groups, value, fn ev -> ev = results end)
-  end
-  def build(data = %{events: value}) when is_binary(value) do
-    Map.update(data, :events, value, fn eV -> eV = get_events(data) end)
-  end
-  def build(data = %{events: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Event,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :events, value, fn ev -> ev = results end)
-  end
-  def build(data = %{interests: value}) when is_binary(value) do
-    Map.update(data, :interests, value, fn eV -> eV = get_interests(data) end)
-  end
-  def build(data = %{interests: value = [h|_]}) when is_binary(h) do
-    results = from(
-      i in Interest,
-      where: i.name in ^value,
-      select: i
-    )
-    |> Repo.all
-    Map.update(data, :interests, value, fn ev -> ev = results end)
-  end
-  def build(data \\ %{}) do
-    default_data = %{ interests: [],  location: [], notes:  [],
-                      people:    [],  groups:   [], events: [],
-                      text:      [],  phone:    [], email:  [],
-                      website:   [],  date:     [], time:   []  }
-    data = Map.merge(default_data, data)
-
-    # Enum.each( data, fn {k, v} ->
-    #   case k do
-    #     :interests -> Map.put(new_data, k, "#{v}!")
-    #     :location -> Map.put(new_data, k, "#{v}!")
-    #     :notes ->  Map.put(new_data, k, "#{v}!")
-    #     :people ->    Map.put(new_data, k, "#{v}!")
-    #     :groups ->   Map.put(new_data, k, "#{v}!")
-    #     :events -> Map.put(new_data, k, "#{v}!")
-    #     :text ->      Map.put(new_data, k, "#{v}!")
-    #     :phone ->    Map.put(new_data, k, "#{v}!")
-    #     :email ->  Map.put(new_data, k, "#{v}!")
-    #     :website ->   Map.put(new_data, k, "#{v}!")
-    #     :date ->     Map.put(new_data, k, "#{v}!")
-    #     :time ->   Map.put(new_data, k, "#{v}!")
-    #     :name ->   Map.put(new_data, k, "#{v}!")
-    #   end
-    # end)
+  def get_person(data = %{name: value}) when is_binary(value) do
+    [record] = read_person(data)
+    record
   end
 
   def update_data(data, map = %{}) do
@@ -251,9 +24,233 @@ defmodule NetworkingLog.Nodes do
   def update_data(data = %{}, _list = [type = %{} | tail ]) do
     data = Map.merge(data, type)
     if tail != [] do
-      update_data(data, tail )
+      update_data(data, tail)
     else
       data
     end
+  end
+
+  def create_person(data) when is_map(data) do
+    if(!Map.has_key?(data, :name)) do
+      IO.write("data is invalid\n")
+      IO.inspect(data, label: "data provided")
+    else
+      %Person{}
+      |> Person.changeset(data)
+      |> Repo.insert
+    end
+  end
+  def read_person(data = %{name: name_value, phone: phone_value, email: email_value}) do
+    if(!(is_nil(name_value) || is_nil(phone_value) || is_nil(email_value) ) ) do
+      q = from p in Person,
+          where:  p.name == ^name_value and
+          p.phone == ^phone_value and
+          p.email == ^email_value
+      Repo.all(q)
+    else
+      if(is_nil(name_value)) do
+        read_person(%{phone: phone_value, email: email_value})
+      else
+        if(is_nil(phone_value)) do
+          read_person(%{name: name_value, email: email_value})
+        else
+          read_person(%{name: name_value, phone: phone_value})
+        end
+      end
+    end
+  end
+  def read_person(data = %{name: name_value, phone: phone_value}) do
+    if(!(is_nil(name_value) || is_nil(phone_value) ) ) do
+      q = from p in Person,
+          where:  p.name == ^name_value and
+          p.phone == ^phone_value
+      Repo.all(q)
+    else
+      if is_nil(name_value) do
+        read_person(%{phone: phone_value})
+      else
+        read_person(%{name: name_value})
+      end
+    end
+  end
+  def read_person(data = %{name: name_value, email: email_value}) do
+    if(!(is_nil(name_value) || is_nil(email_value) ) ) do
+      q = from p in Person,
+          where:  p.name == ^name_value and
+          p.email == ^email_value
+      Repo.all(q)
+    else
+      if is_nil(name_value) do
+        read_person(%{email: email_value})
+      else
+        read_person(%{name: name_value})
+      end
+    end
+  end
+  def read_person(data = %{phone: phone_value, email: email_value}) do
+    if(!(is_nil(phone_value) || is_nil(email_value) ) ) do
+      q = from p in Person,
+          where:  p.phone == ^phone_value and
+          p.email == ^email_value
+      Repo.all(q)
+    else
+      if(is_nil(phone_value)) do
+        read_person(%{email: email_value})
+      else
+        read_person(%{phone: phone_value})
+      end
+    end
+  end
+  def read_person(data = %{ phone: phone_value}) do
+    q = from p in Person,
+        where:  p.phone == ^phone_value
+    Repo.all(q)
+  end
+  def read_person(data = %{email: email_value}) do
+    q = from p in Person,
+        where:  p.email == ^email_value
+    Repo.all(q)
+  end
+  def read_person(data = %{name: name_value}) do
+    q = from p in Person,
+        where:  p.name == ^name_value
+    Repo.all(q)
+  end
+  def read_person(data) do
+    IO.write("data is invalid\n")
+    IO.inspect(data, label: "data provided")
+  end
+  # def read_person(data) when is_list(data) do
+  #   if(!Map.has_key?(data, :name)) do
+  #     IO.write("data is invalid\n")
+  #     IO.inspect(data, label: "data provided")
+  #   else
+  #     Repo.get_by(Person, name: value)
+  #   end
+  # end
+  def update_person(old_data, new_data) when is_map(old_data) do
+    if(!Map.has_key?(old_data, :name) || !Map.has_key?(new_data, :name)) do
+      IO.write("data is invalid\n")
+      IO.inspect(old_data, label: "old_data provided")
+      IO.inspect(new_data, label: "new_data provided")
+    else
+      [record] = read_person(old_data)
+      Person.changeset(record, new_data)
+      |> Repo.update
+    end
+  end
+  def delete_person(data) when is_map(data) do
+    if(!Map.has_key?(data, :name)) do
+      IO.write("data is invalid\n")
+      IO.inspect(data, label: "data provided")
+    else
+      [record | _tail] = read_person(data)
+      Person.changeset(record, %{})
+      |> Repo.delete
+    end
+  end
+
+  def create_note(data) when is_map(data) do
+    if(!Map.has_key?(data, :text)) do
+      IO.write("data is invalid\n")
+      IO.inspect(data, label: "data provided")
+    else
+      %Note{}
+      |> Note.changeset(data)
+      |> Repo.insert
+    end
+  end
+  def read_note(data = %{text: value}) when is_binary(value) do
+    Repo.all(from n in Note, where: n.text == ^value)
+  end
+  def update_note(old_data, new_data) when is_map(old_data) do
+    if(!Map.has_key?(old_data, :text) || !Map.has_key?(new_data, :text)) do
+      IO.write("data is invalid\n")
+      IO.inspect(old_data, label: "old_data provided")
+      IO.inspect(new_data, label: "new_data provided")
+    else
+      get_note(old_data)
+      |> Note.changeset(new_data)
+      |> Repo.update
+    end
+  end
+  def delete_note(data) when is_map(data) do
+    if(!Map.has_key?(data, :text)) do
+      IO.write("data is invalid\n")
+      IO.inspect(data, label: "data provided")
+    else
+      get_note(data)
+      |> Note.changeset(%{})
+      |> Repo.delete
+    end
+  end
+
+  def create_person_notes(person, note = %{text: text}) do
+    people = read_person(person)
+    notes = read_note(note)
+    # IO.inspect(people, label: "people from read")
+    [p_record] = people
+    [n_record] = notes
+
+    n_record
+    |> Repo.preload(:people)
+    |> Note.changeset(people)
+    |> Repo.update
+  end
+  def read_person_notes(person, notes = %{text: text})  do
+    [p_record] = read_person(person)
+    [n_record] = read_note(notes)
+    q = from ptn in PersonToNotes,
+        where:  ptn.person_id == ^p_record.id and
+                ptn.note_id   == ^n_record.id
+    # IO.inspect(q, label: "ptn query")
+    Repo.all(q)
+  end
+  def update_person_notes(person, notes = %{text: text})  do
+
+  end
+  def delete_person_notes(person, notes = %{text: _text})  do
+    read_person_notes(person, notes)
+    |> Enum.each( fn(ptn) ->
+                    PersonToNotes.changeset(ptn)
+                    |> Repo.delete
+                  end)
+    # |> Repo.delete
+  end
+
+  def tester do
+    person = %{name: "will"}
+    create_person(person)
+    |> IO.inspect(label: "person")
+    # update_person(person, Map.put(person, :phone, "7777777777"))
+
+    person2 = %{name: "bilbo"}
+    create_person(person2)
+    |> IO.inspect(label: "person 2")
+
+    note = %{text: "boxer"}
+    create_note(note)
+    |> IO.inspect(label: "note")
+
+    note2 = %{text: "walking"}
+    create_note(note2)
+    |> IO.inspect(label: "note 2")
+
+    # create_person_notes(person, note)
+    # create_person_notes(person2, note2)
+    # create_person_notes(person2, note)
+    # create_person_notes(person, note2)
+
+    # delete_person_notes(person2, note)
+
+    # Repo.preload(n, :people)
+    # |> Note.changeset(people)
+    # |> Repo.update
+
+    # IO.inspect(read_person_notes(person, note), label: "reading person notes 1")
+
+    # delete_person(person2)
+    # delete_person(person)
+    # delete_note(note)
   end
 end
