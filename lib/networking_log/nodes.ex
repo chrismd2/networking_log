@@ -17,6 +17,12 @@ defmodule NetworkingLog.Nodes do
     [record] = read_person(data)
     record
   end
+  def get_notes_for_person(data = %{name: value}) when is_binary(value) do
+    read_person_notes(%{person: data})
+  end
+  def get_people_for_note(data = %{text: value}) when is_binary(value) do
+    read_person_notes(%{notes: data})
+  end
 
   def update_data(data, map = %{}) do
     update_data(data, [map])
