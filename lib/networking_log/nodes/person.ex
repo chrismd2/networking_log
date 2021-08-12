@@ -9,7 +9,7 @@ defmodule NetworkingLog.Nodes.Person do
     field :phone,             :string, size: 10
     field :email,             :string
 
-    many_to_many :notes,      Nodes.Note, join_through: "person_to_notes"
+    many_to_many :notes,      Nodes.Note, join_through: "person_to_notes", on_replace: :delete
 
     timestamps()
   end

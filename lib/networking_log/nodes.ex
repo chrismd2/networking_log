@@ -194,21 +194,6 @@ defmodule NetworkingLog.Nodes do
     |> Repo.preload(:people)
     |> Note.changeset_assoc(people)
     |> Repo.update
-    # # IO.inspect(people, label: "people from read")
-    # [p_record] = people
-    # p_record = Repo.preload(p_record, :notes)
-    # # p_record.id
-    # # p_record
-    # # |> Repo.preload(:notes)
-    # # |> Person.changeset(%{})
-    # # |> Repo.update
-    # [n_record] = notes
-    # n_record = Repo.preload(n_record, :people)
-    #
-    # n_record = n_record
-    # |> Repo.preload(:people)
-    # |> Note.changeset(%{note_id: n_record.id, people: [people]})
-    # |> Repo.update
   end
   def read_person_notes(person, notes = %{text: text})  do
     [p_record] = read_person(person)
@@ -228,7 +213,6 @@ defmodule NetworkingLog.Nodes do
                     PersonToNotes.changeset(ptn)
                     |> Repo.delete
                   end)
-    # |> Repo.delete
   end
 
 
@@ -269,7 +253,7 @@ defmodule NetworkingLog.Nodes do
   def working do
     [person, person2, note, note2] = @testing_values
 
-    # create_person_notes(person, note)
+    create_person_notes(person, note)
     create_person_notes(person2, note2)
     create_person_notes(person2, note)
     create_person_notes(person, note2)
