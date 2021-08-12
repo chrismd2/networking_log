@@ -285,14 +285,11 @@ defmodule NetworkingLog.Nodes do
     update_person_notes(person2, note)
     update_person_notes(person2, note2)
 
+    read_person_notes(%{person: person})
+    |> IO.inspect(label: "#{person.name} person notes")
 
-    # delete_person_notes(person2, note)
-
-    # Repo.preload(n, :people)
-    # |> Note.changeset(people)
-    # |> Repo.update
-
-    # IO.inspect(read_person_notes(person, note), label: "reading person notes 1")
+    read_person_notes(%{notes: note})
+    |> IO.inspect(label: "#{note.text} person notes")
   end
 
   def teardown do
