@@ -190,9 +190,10 @@ defmodule NetworkingLog.Nodes do
     notes = read_note(note)
     [n_record] = notes
     # n_record = Repo.preload(n_record, :people)
-    people = people ++ n_record.people
+    # people = people ++ n_record.people
 
     n_record
+    |> Repo.preload(:people)
     |> Note.changeset_assoc(people)
     |> Repo.update
   end
@@ -205,7 +206,24 @@ defmodule NetworkingLog.Nodes do
     # IO.inspect(q, label: "ptn query")
     Repo.all(q)
   end
-  def update_person_notes(person, notes = %{text: text})  do
+  def read_person_notes(%{person: person, notes: notes = %{text: text}})  do
+    read_person_notes(person, notes)
+  end
+  def read_person_notes(%{person: person})  do
+    [p_record] = read_person(person)
+    q = from ptn in PersonToNotes,
+        where:  ptn.person_id == ^p_record.id
+    # IO.inspect(q, label: "ptn query")
+    Repo.all(q)
+  end
+  def read_person_notes(%{notes: notes = %{text: text}})  do
+    [n_record] = read_note(notes)
+    q = from ptn in PersonToNotes,
+        where:  ptn.note_id   == ^n_record.id
+    # IO.inspect(q, label: "ptn query")
+    Repo.all(q)
+  end
+  def update_person_notes(person, note = %{text: text})  do
     people = read_person(person)
     notes = read_note(note)
     [n_record] = notes
