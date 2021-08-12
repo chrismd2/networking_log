@@ -189,9 +189,10 @@ defmodule NetworkingLog.Nodes do
     people = read_person(person)
     notes = read_note(note)
     [n_record] = notes
+    n_record = Repo.preload(n_record, :people)
+    people = people ++ n_record.people
 
     n_record
-    |> Repo.preload(:people)
     |> Note.changeset_assoc(people)
     |> Repo.update
   end
@@ -217,7 +218,7 @@ defmodule NetworkingLog.Nodes do
 
 
 
-############################TESTING############################
+############################ TESTING ############################
 
 @testing_values [
                   %{name: "will"},
@@ -253,10 +254,10 @@ defmodule NetworkingLog.Nodes do
   def working do
     [person, person2, note, note2] = @testing_values
 
-    create_person_notes(person, note)
-    create_person_notes(person2, note2)
+    create_person_notes(person,  note)
+    create_person_notes(person,  note2)
     create_person_notes(person2, note)
-    create_person_notes(person, note2)
+    create_person_notes(person2, note2)
 
     # delete_person_notes(person2, note)
 
