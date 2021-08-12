@@ -6,9 +6,6 @@ defmodule NetworkingLog.Nodes do
 
   import Ecto.Query
 
-  def add(data) do
-    Repo.insert(data)
-  end
   def get_note(data = %{text: value}) when is_binary(value) do
     [record] = read_note(data)
     record
