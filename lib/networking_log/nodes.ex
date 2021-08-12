@@ -189,7 +189,7 @@ defmodule NetworkingLog.Nodes do
     people = read_person(person)
     notes = read_note(note)
     [n_record] = notes
-    n_record = Repo.preload(n_record, :people)
+    # n_record = Repo.preload(n_record, :people)
     people = people ++ n_record.people
 
     n_record
@@ -206,7 +206,15 @@ defmodule NetworkingLog.Nodes do
     Repo.all(q)
   end
   def update_person_notes(person, notes = %{text: text})  do
+    people = read_person(person)
+    notes = read_note(note)
+    [n_record] = notes
+    n_record = Repo.preload(n_record, :people)
+    people = people ++ n_record.people
 
+    n_record
+    |> Note.changeset_assoc(people)
+    |> Repo.update
   end
   def delete_person_notes(person, notes = %{text: _text})  do
     read_person_notes(person, notes)
@@ -225,7 +233,7 @@ defmodule NetworkingLog.Nodes do
                   %{name: "bilbo"},
                   %{text: "boxer"},
                   %{text: "walking"}
-                 ]
+                ]
 
 
 
