@@ -282,8 +282,9 @@ defmodule NetworkingLog.Nodes do
 
     create_person_notes(person,  note)
     create_person_notes(person,  note2)
-    create_person_notes(person2, note)
-    create_person_notes(person2, note2)
+    update_person_notes(person2, note)
+    update_person_notes(person2, note2)
+
 
     # delete_person_notes(person2, note)
 
