@@ -17,6 +17,7 @@ defmodule NetworkingLogWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/data_management", DataManagementController, :index
   end
 
   # Other scopes may use custom stacks.

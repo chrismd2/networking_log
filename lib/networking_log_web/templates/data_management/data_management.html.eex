@@ -1,0 +1,23 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to data_management!", name: "Phoenix" %></h1>
+  <p>Peace of mind from prototype to production</p>
+</section>
+
+<section class="row">
+  <article class="column">
+    <h2>Left col</h2>
+    <ul>
+      <li>
+        Stuff
+      </li>
+    </ul>
+  </article>
+  <article class="column">
+    <h2>Right col</h2>
+    <ul>
+      <li>
+        Other stuff
+      </li>
+    </ul>
+  </article>
+</section>
