@@ -20,6 +20,18 @@ defmodule NetworkingLog.Nodes do
   def get_people_for_note(data = %{text: value}) when is_binary(value) do
     read_person_notes(%{notes: data})
   end
+  def get_all_people do
+    q = from p in Person
+    Repo.all(q)
+  end
+  def get_all_notes do
+    q = from n in Notes
+    Repo.all(q)
+  end
+  def get_all_person_to_notes do
+    q = from ptn in PersonToNotes
+    Repo.all(q)
+  end
 
   def update_data(data, map = %{}) do
     update_data(data, [map])

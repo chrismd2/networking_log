@@ -78,4 +78,13 @@ defmodule NetworkingLogWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  def live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {NetworkingLogWeb.LayoutView, "live.html"}
+
+      unquote(view_helpers())
+    end
+  end
 end
