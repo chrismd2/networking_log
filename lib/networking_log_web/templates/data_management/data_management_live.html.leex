@@ -1,6 +1,13 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to data_management!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+  <h1><%= gettext "Add People and Notes!", name: "Phoenix" %></h1>
+  <form action="#" phx-submit="add_new_person" >
+    <%= text_input :person, :person_name, placeholder: "Person Name", autocomplete: "off" %>
+    <%= submit "Person Name", phx_disable_with: "loading", class: ""%>
+    <button phx-click="delete"
+      class = "">
+      Delete
+    </button>
+  </form>
 </section>
 
 <section class="row">
