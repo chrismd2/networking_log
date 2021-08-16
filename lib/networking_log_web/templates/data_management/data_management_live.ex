@@ -3,6 +3,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   use Phoenix.LiveView
   alias NetworkingLog.Nodes
 
+  @impl true
   def mount(_params, _session, socket) do
     mounted_socket = socket
     |> assign(:people, Nodes.get_all_people)

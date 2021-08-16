@@ -25,7 +25,7 @@ defmodule NetworkingLog.Nodes do
     Repo.all(q)
   end
   def get_all_notes do
-    q = from n in Notes
+    q = from n in Note
     Repo.all(q)
   end
   def get_all_person_to_notes do

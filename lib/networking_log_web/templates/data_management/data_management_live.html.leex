@@ -8,7 +8,9 @@
     <h2>People</h2>
     <ul>
       <li>
-        <a><%= link"DataManagement", to: Routes.data_management_path(@conn, :index) %></a>
+        <%= for person <- @people do %>
+          person.name
+        <% end %>
       </li>
     </ul>
   </article>
