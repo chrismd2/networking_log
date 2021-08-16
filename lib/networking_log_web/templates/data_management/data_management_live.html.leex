@@ -4,15 +4,15 @@
       phx_submit: "add_new_person" %>
     <div class = "field">
       <section class="row">
-        <article="column">
+        <span style="width: 30%">
           <%= text_input f, :person_name, placeholder: "Name", autocomplete: "off" %>
-        </article>
-        <article="column">
+        </span>
+        <span style="width: 30%">
           <%= text_input f, :person_phone, placeholder: "Phone", autocomplete: "off" %>
-        </article>
-        <article="column">
+        </span>
+        <span style="width: 30%">
           <%= text_input f, :person_email, placeholder: "Email", autocomplete: "off" %>
-        </article>
+        </span>
       </section>
       <%= submit "Person Name", class: ""%>
       <button phx-click="delete"
