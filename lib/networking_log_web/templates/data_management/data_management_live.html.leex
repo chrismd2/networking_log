@@ -1,12 +1,25 @@
 <section class="phx-hero">
   <h1><%= gettext "Add People and Notes!", name: "Phoenix" %></h1>
-  <form action="#" phx-submit="add_new_person" >
-    <%= text_input :person, :person_name, placeholder: "Person Name", autocomplete: "off" %>
-    <%= submit "Person Name", phx_disable_with: "loading", class: ""%>
-    <button phx-click="delete"
-      class = "">
-      Delete
-    </button>
+  <%= f = form_for @changeset, "",
+      phx_submit: "add_new_person" %>
+    <div class = "field">
+      <section class="row">
+        <article="column">
+          <%= text_input f, :person_name, placeholder: "Name", autocomplete: "off" %>
+        </article>
+        <article="column">
+          <%= text_input f, :person_phone, placeholder: "Phone", autocomplete: "off" %>
+        </article>
+        <article="column">
+          <%= text_input f, :person_email, placeholder: "Email", autocomplete: "off" %>
+        </article>
+      </section>
+      <%= submit "Person Name", class: ""%>
+      <button phx-click="delete"
+              class = "">
+        Delete
+      </button>
+    </div>
   </form>
 </section>
 
