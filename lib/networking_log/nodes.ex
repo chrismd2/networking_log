@@ -47,8 +47,14 @@ defmodule NetworkingLog.Nodes do
 
   def create_person(data) when is_map(data) do
     if(!Map.has_key?(data, :name)) do
-      IO.write("data is invalid\n")
-      IO.inspect(data, label: "data provided")
+      if(!Map.has_key?(data, "person")) do
+        IO.write("data is invalid\n")
+        IO.inspect(data, label: "data provided")
+      else
+        {:ok, data} = Map.fetch(data, "person")
+        update_data(%{}, Enum.map(data, fn {k, v} -> %{String.to_atom(k) => v} end))
+        |> create_person
+      end
     else
       %Person{}
       |> Person.changeset(data)
@@ -156,8 +162,14 @@ defmodule NetworkingLog.Nodes do
   end
   def delete_person(data) when is_map(data) do
     if(!Map.has_key?(data, :name)) do
-      IO.write("data is invalid\n")
-      IO.inspect(data, label: "data provided")
+      if(!Map.has_key?(data, "person")) do
+        IO.write("data is invalid\n")
+        IO.inspect(data, label: "data provided")
+      else
+        {:ok, data} = Map.fetch(data, "person")
+        update_data(%{}, Enum.map(data, fn {k, v} -> %{String.to_atom(k) => v} end))
+        |> delete_person
+      end
     else
       [record | _tail] = read_person(data)
       Person.changeset(record, %{})

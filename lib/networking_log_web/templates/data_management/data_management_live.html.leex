@@ -5,16 +5,16 @@
     <div class = "field">
       <section class="row">
         <span style="width: 30%">
-          <%= text_input f, :person_name, placeholder: "Name", autocomplete: "off" %>
+          <%= text_input f, :name, placeholder: "Name", autocomplete: "off" %>
         </span>
         <span style="width: 30%">
-          <%= text_input f, :person_phone, placeholder: "Phone", autocomplete: "off" %>
+          <%= text_input f, :phone, placeholder: "Phone", autocomplete: "off" %>
         </span>
         <span style="width: 30%">
-          <%= text_input f, :person_email, placeholder: "Email", autocomplete: "off" %>
+          <%= text_input f, :email, placeholder: "Email", autocomplete: "off" %>
         </span>
       </section>
-      <%= submit "Person Name", class: ""%>
+      <%= submit "New Person", class: ""%>
       <button phx-click="delete"
               class = "">
         Delete
@@ -27,11 +27,11 @@
   <article class="column">
     <h2>People</h2>
     <ul>
-      <li>
-        <%= for person <- @people do %>
-          person.name
-        <% end %>
-      </li>
+      <%= for person <- @people do %>
+        <li>
+          <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
+        </li>
+      <% end %>
     </ul>
   </article>
   <article class="column">
