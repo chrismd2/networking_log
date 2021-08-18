@@ -17,9 +17,6 @@
       <%= submit "New Person", class: ""%>
     </div>
   </form>
-  <button phx-click="delete"class = "">
-    Delete
-  </button>
 </section>
 
 <section class="row">
@@ -28,10 +25,15 @@
     <ul>
       <%= for person <- @people do %>
         <li>
-          <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
+          <button phx-click="select_person" value=<%=person.id%> >
+            <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
+          </button>
         </li>
       <% end %>
     </ul>
+    <button phx-click="delete"class = "">
+      Delete
+    </button>
   </article>
   <article class="column">
     <h2>Right col</h2>
