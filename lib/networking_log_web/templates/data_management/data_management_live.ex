@@ -32,8 +32,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
 
   @impl true
   def handle_event("delete", params, socket) do
-    IO.inspect(params, label: "params")
-    IO.inspect(socket, label: "socket")
+    IO.inspect(params, label: "params in delete")
+    # IO.inspect(socket, label: "socket in delete")
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:note, Nodes.get_all_notes)
