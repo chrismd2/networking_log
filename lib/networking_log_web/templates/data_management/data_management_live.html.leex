@@ -24,11 +24,11 @@
     <h2>People</h2>
     <ul>
       <%= for person <- @people do %>
-        <li>
+        <div>
           <button phx-click="select_person" value=<%=person.id%> >
             <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
           </button>
-        </li>
+        </div>
       <% end %>
     </ul>
     <button phx-click="delete" class = "">
