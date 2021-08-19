@@ -31,6 +31,13 @@ defmodule NetworkingLogWeb.DataManagementLive do
     {:ok, mounted_socket}
   end
 
+  defp select_person_helper(currently_selected_list, new_person) do
+    if Enum.member?(currently_selected_list, new_person) do
+      List.delete(currently_selected_list, new_person)
+    else
+      [new_person]++currently_selected_list
+    end
+  end
   @impl true
   def handle_event("select_person", params, socket) do
     IO.inspect(params, label: "params in handle_event(select_person)")
@@ -38,16 +45,14 @@ defmodule NetworkingLogWeb.DataManagementLive do
     {:ok, value} = Map.fetch(params, "value")
     {value, _string_tail} = Integer.parse(value)
     # IO.inspect(value, label: "value in select_person")
-
-    a_thing = socket.assigns#Map.fetch(, "selected")
-    # |> IO.inspect(label: "socket.assigns")#Map.fetch(, \"selected\")")
     currently_selected_list = socket.assigns.selected
+    new_person = Nodes.read_person(value)
 
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:note, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
-    |> assign(:selected, [Nodes.read_person(value)] ++ currently_selected_list)
+    |> assign(:selected, select_person_helper(currently_selected_list, new_person))
 
     # IO.inspect(socket, label: "new socket in handle_event(select_person)")
     {:noreply, socket}
