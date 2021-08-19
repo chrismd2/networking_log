@@ -44,9 +44,26 @@
             <%= person.name %>
             <%= NetworkingLogWeb.DataManagementLive.format_helper(person.phone) %>
             <%= NetworkingLogWeb.DataManagementLive.format_helper(person.email) %>
+            <table>
+              <%= for note <- person.notes do %>
+                </br>
+                <%= note.text %>
+              <% end %>
+            </table>
           </td>
         </tr>
       <% end %>
     </table>
   </article>
 </section>
+</br>
+<h2>Notes</h2>
+<table>
+  <%= for note <- @notes do %>
+  <tr>
+    <td>
+      <%= note.text %>
+    </td>
+  </tr>
+  <% end %>
+</table>

@@ -24,7 +24,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   def mount(_params, _session, socket) do
     mounted_socket = socket
     |> assign(:people, Nodes.get_all_people)
-    |> assign(:note, Nodes.get_all_notes)
+    |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(changeset: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
     |> assign(selected: [])
@@ -47,17 +47,17 @@ defmodule NetworkingLogWeb.DataManagementLive do
 
     {:ok, value} = Map.fetch(params, "value")
     {value, _string_tail} = Integer.parse(value)
-    # IO.inspect(value, label: "value in select_person")
+    IO.inspect(value, label: "value in select_person")
     currently_selected_list = socket.assigns.selected
     new_person = Nodes.read_person(value)
 
     socket = socket
     |> assign(:people, Nodes.get_all_people)
-    |> assign(:note, Nodes.get_all_notes)
+    |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected, select_person_helper(currently_selected_list, new_person))
 
-    # IO.inspect(socket, label: "new socket in handle_event(select_person)")
+    IO.inspect(socket, label: "new socket in handle_event(select_person)")
     {:noreply, socket}
   end
   @impl true
@@ -68,7 +68,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     Nodes.delete_person(socket.assigns.selected)
     socket = socket
     |> assign(:people, Nodes.get_all_people)
-    |> assign(:note, Nodes.get_all_notes)
+    |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected, [])
     IO.inspect(socket, label: "new socket in delete")
@@ -90,7 +90,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     IO.inspect(socket, label: "socket")
     socket = socket
     |> assign(:people, Nodes.get_all_people)
-    |> assign(:note, Nodes.get_all_notes)
+    |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     {:noreply, socket}
   end

@@ -142,7 +142,7 @@ defmodule NetworkingLog.Nodes do
     if is_nil(result) do
       IO.write("no result found for #{data}")
     else
-      result
+      Repo.preload(result, :notes)
     end
   end
   def read_person(data) do
