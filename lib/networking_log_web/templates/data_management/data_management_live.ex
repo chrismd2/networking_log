@@ -26,7 +26,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(changeset: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
     |> assign(selected: [])
 
-    IO.inspect(mounted_socket, label: "new socket in mount")
+    # IO.inspect(mounted_socket, label: "new socket in mount")
 
     {:ok, mounted_socket}
   end
@@ -37,11 +37,10 @@ defmodule NetworkingLogWeb.DataManagementLive do
 
     {:ok, value} = Map.fetch(params, "value")
     {value, _string_tail} = Integer.parse(value)
-    IO.inspect(value, label: "value in select_person")
+    # IO.inspect(value, label: "value in select_person")
 
     a_thing = socket.assigns#Map.fetch(, "selected")
-    |> IO.inspect(label: "socket.assigns")#Map.fetch(, \"selected\")")
-    # {:ok, currently_selected_list} = Map.fetch(a_thing, "selected")
+    # |> IO.inspect(label: "socket.assigns")#Map.fetch(, \"selected\")")
     currently_selected_list = socket.assigns.selected
 
     socket = socket
@@ -50,25 +49,28 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected, [Nodes.read_person(value)] ++ currently_selected_list)
 
-    IO.inspect(socket, label: "new socket in handle_event(select_person)")
+    # IO.inspect(socket, label: "new socket in handle_event(select_person)")
     {:noreply, socket}
   end
   @impl true
-  def handle_event("delete", params, socket) do
-    IO.inspect(params, label: "params in delete")
+  def handle_event("delete", _params, socket) do
+    # IO.inspect(params, label: "params in delete")
     # IO.inspect(socket, label: "socket in delete")
+    IO.inspect(socket.assigns.selected, label: "selected buttons for deletion")
+    Nodes.delete_person(socket.assigns.selected)
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:note, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
+    |> assign(:selected, [])
     IO.inspect(socket, label: "new socket in delete")
     {:noreply, socket}
   end
   @impl true
   def handle_event("add_new_person", params, socket) do
     NetworkingLog.Nodes.create_person(params)
-    IO.inspect(params, label: "params")
-    IO.inspect(socket, label: "socket")
+    # IO.inspect(params, label: "params")
+    # IO.inspect(socket, label: "socket")
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)

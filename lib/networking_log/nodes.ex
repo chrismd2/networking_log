@@ -168,6 +168,18 @@ defmodule NetworkingLog.Nodes do
       |> Repo.update
     end
   end
+  def delete_person([]) do
+    :done
+  end
+  def delete_person(_data = [h | t]) do
+    delete_person(%{
+      name: h.name,
+      phone: h.phone,
+      email: h.email  })
+    if t!=[] do
+      delete_person(t)
+    end
+  end
   def delete_person(data) when is_map(data) do
     if(!Map.has_key?(data, :name)) do
       if(!Map.has_key?(data, "person")) do
