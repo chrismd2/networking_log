@@ -137,6 +137,14 @@ defmodule NetworkingLog.Nodes do
         where:  p.name == ^name_value
     Repo.all(q)
   end
+  def read_person(data) when is_integer(data) do
+    result = Repo.get_by(Person, data)
+    if is_nil(result) do
+      IO.write("no result found for #{data}")
+    else
+      result
+    end
+  end
   def read_person(data) do
     IO.write("data is invalid\n")
     IO.inspect(data, label: "data provided")
