@@ -7,7 +7,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     IO.inspect(a_thing, label: "a_thing in DataManagementController")
     "dev test"
   end
-  defp format_helper(value) do
+  def format_helper(value) do
     case value do
       nil -> ""
       _   -> " #{value}"
@@ -15,6 +15,9 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   def format_person_data(_person = %{name: name, phone: phone, email: email}) do
     format_helper(name)# <> format_helper(phone) <> format_helper(email)
+  end
+  def format_person_data(_person = %{name: name, phone: phone, email: email}, info_card? = true) do
+    "#{format_helper(name)} \n\t#{format_helper(phone)} \n\t#{format_helper(email)}"
   end
 
   @impl true
