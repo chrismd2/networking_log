@@ -138,7 +138,7 @@ defmodule NetworkingLog.Nodes do
     Repo.all(q)
   end
   def read_person(data) when is_integer(data) do
-    result = Repo.get_by(Person, data)
+    result = Repo.get(Person, data)
     if is_nil(result) do
       IO.write("no result found for #{data}")
     else
