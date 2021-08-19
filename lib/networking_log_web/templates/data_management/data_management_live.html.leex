@@ -36,11 +36,13 @@
     </button>
   </article>
   <article class="column">
-    <h2>Right col</h2>
-    <ul>
+    <h2>More info</h2>
+    <%= for person <- @selected do %>
       <li>
-        Other stuff
+        <button phx-click="select_person" value=<%=person.id%> >
+          <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
+        </button>
       </li>
-    </ul>
+    <% end %>
   </article>
 </section>
