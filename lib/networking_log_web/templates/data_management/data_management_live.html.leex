@@ -1,6 +1,6 @@
 <section class="phx-hero">
-  <h1><%= gettext "Add People and Notes!", name: "Phoenix" %></h1>
-  <%= f = form_for @changeset, "",
+  <h1><%= gettext "Add People!", name: "Phoenix" %></h1>
+  <%= f = form_for @changeset_person, "",
       phx_submit: "add_new_person" %>
     <div class = "field">
       <section class="row">
@@ -57,6 +57,20 @@
   </article>
 </section>
 </br>
+<section class="phx-hero">
+  <h1><%= gettext "Add Notes!", name: "Phoenix" %></h1>
+  <%= f = form_for @changeset_note, "",
+  phx_submit: "add_new_note" %>
+  <div class = "field">
+    <section class="row">
+      <span style="width: 100%" >
+        <%= text_input f, :text, placeholder: "Text", autocomplete: "off" %>
+      </span>
+    </section>
+    <%= submit "New Note", class: ""%>
+  </div>
+</form>
+</section>
 <h2>Notes</h2>
 <table>
   <%= for note <- @notes do %>

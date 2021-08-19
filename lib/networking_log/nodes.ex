@@ -199,8 +199,14 @@ defmodule NetworkingLog.Nodes do
 
   def create_note(data) when is_map(data) do
     if(!Map.has_key?(data, :text)) do
-      IO.write("data is invalid\n")
-      IO.inspect(data, label: "data provided")
+      if(!Map.has_key?(data, "note")) do
+        IO.write("data is invalid\n")
+        IO.inspect(data, label: "data provided")
+      else
+        {:ok, data} = Map.fetch(data, "note")
+        update_data(%{}, Enum.map(data, fn {k, v} -> %{String.to_atom(k) => v} end))
+        |> create_note
+      end
     else
       %Note{}
       |> Note.changeset(data)

@@ -26,7 +26,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:people, Nodes.get_all_people)
     |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
-    |> assign(changeset: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
+    |> assign(changeset_person: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
+    |> assign(changeset_note: NetworkingLog.Nodes.Note.changeset(%NetworkingLog.Nodes.Note{}, %{}) )
     |> assign(selected: [])
 
     # IO.inspect(mounted_socket, label: "new socket in mount")
@@ -82,6 +83,20 @@ defmodule NetworkingLogWeb.DataManagementLive do
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
+    {:noreply, socket}
+  end
+  @impl true
+  def handle_event("add_new_note", params, socket) do
+    IO.inspect(params, label: "params in add_new_note")
+    IO.inspect(socket, label: "socket in add_new_note")
+    NetworkingLog.Nodes.create_note(params)
+
+    socket = socket
+    |> assign(:people, Nodes.get_all_people)
+    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
+
+    IO.inspect(socket, label: "new socket in add_new_note")
     {:noreply, socket}
   end
   @impl true
