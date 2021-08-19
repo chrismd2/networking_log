@@ -48,7 +48,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:people, Nodes.get_all_people)
     |> assign(:note, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
-    |> assign(:selected, [Nodes.get_person(value)] ++ currently_selected_list)
+    |> assign(:selected, [Nodes.read_person(value)] ++ currently_selected_list)
 
     IO.inspect(socket, label: "new socket in handle_event(select_person)")
     {:noreply, socket}
