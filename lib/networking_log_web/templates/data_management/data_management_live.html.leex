@@ -38,7 +38,7 @@
   <article class="column">
     <h2>More info</h2>
     <table>
-      <%= for person <- @selected do %>
+      <%= for person <- @selected_person do %>
         <tr>
           <td>
             <%= person.name %>
@@ -74,10 +74,13 @@
 <h2>Notes</h2>
 <table>
   <%= for note <- @notes do %>
-  <tr>
-    <td>
-      <%= note.text %>
-    </td>
-  </tr>
+    <div>
+      <button style="width: 100%" phx-click="select_note" value=<%=note.id%> >
+        <%= note.text %>
+      </button>
+    </div>
   <% end %>
+  <button phx-click="delete" class = "">
+    Delete
+  </button>
 </table>

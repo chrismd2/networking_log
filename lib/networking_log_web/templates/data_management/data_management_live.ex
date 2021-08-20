@@ -28,18 +28,19 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(changeset_person: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
     |> assign(changeset_note: NetworkingLog.Nodes.Note.changeset(%NetworkingLog.Nodes.Note{}, %{}) )
-    |> assign(selected: [])
+    |> assign(selected_person: [])
+    |> assign(selected_note: [])
 
     # IO.inspect(mounted_socket, label: "new socket in mount")
 
     {:ok, mounted_socket}
   end
 
-  defp select_person_helper(currently_selected_list, new_person) do
-    if Enum.member?(currently_selected_list, new_person) do
-      List.delete(currently_selected_list, new_person)
+  defp select_person_helper(currently_selected_person_list, new_person) do
+    if Enum.member?(currently_selected_person_list, new_person) do
+      List.delete(currently_selected_person_list, new_person)
     else
-      [new_person]++currently_selected_list
+      [new_person]++currently_selected_person_list
     end
   end
   @impl true
@@ -49,14 +50,11 @@ defmodule NetworkingLogWeb.DataManagementLive do
     {:ok, value} = Map.fetch(params, "value")
     {value, _string_tail} = Integer.parse(value)
     IO.inspect(value, label: "value in select_person")
-    currently_selected_list = socket.assigns.selected
+    currently_selected_person_list = socket.assigns.selected_person
     new_person = Nodes.read_person(value)
 
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
-    |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
-    |> assign(:selected, select_person_helper(currently_selected_list, new_person))
+    |> assign(:selected_person, select_person_helper(currently_selected_person_list, new_person))
 
     IO.inspect(socket, label: "new socket in handle_event(select_person)")
     {:noreply, socket}
@@ -65,13 +63,15 @@ defmodule NetworkingLogWeb.DataManagementLive do
   def handle_event("delete", _params, socket) do
     # IO.inspect(params, label: "params in delete")
     # IO.inspect(socket, label: "socket in delete")
-    IO.inspect(socket.assigns.selected, label: "selected buttons for deletion")
-    Nodes.delete_person(socket.assigns.selected)
+    IO.inspect(socket.assigns.selected_person, label: "selected_person buttons for deletion")
+    Nodes.delete_person(socket.assigns.selected_person)
+    Nodes.delete_note(socket.assigns.selected_note)
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:notes, Nodes.get_all_notes)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
-    |> assign(:selected, [])
+    |> assign(:selected_person, [])
+    |> assign(:selected_note, [])
     IO.inspect(socket, label: "new socket in delete")
     {:noreply, socket}
   end
@@ -97,6 +97,22 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
 
     IO.inspect(socket, label: "new socket in add_new_note")
+    {:noreply, socket}
+  end
+  @impl true
+  def handle_event("select_note", params, socket) do
+    IO.inspect(params, label: "params in handle_event(select_note)")
+
+    {:ok, value} = Map.fetch(params, "value")
+    {value, _string_tail} = Integer.parse(value)
+    IO.inspect(value, label: "value in select_note")
+    currently_selected_note_list = socket.assigns.selected_note
+    new_note = Nodes.read_note(value)
+
+    socket = socket
+    |> assign(:selected_note, select_person_helper(currently_selected_note_list, new_note))
+
+    IO.inspect(socket, label: "new socket in handle_event(select_note)")
     {:noreply, socket}
   end
   @impl true

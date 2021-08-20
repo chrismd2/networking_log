@@ -213,6 +213,15 @@ defmodule NetworkingLog.Nodes do
       |> Repo.insert
     end
   end
+  def read_note(data) when is_integer(data) do
+    # Repo.all(from n in Note, where: n.text == ^value)
+    result = Repo.get(Note, data)
+    if is_nil(result) do
+      IO.write("no result found for #{data}")
+    else
+      Repo.preload(result, :people)
+    end
+  end
   def read_note(data = %{text: value}) when is_binary(value) do
     Repo.all(from n in Note, where: n.text == ^value)
   end
@@ -225,6 +234,15 @@ defmodule NetworkingLog.Nodes do
       get_note(old_data)
       |> Note.changeset(new_data)
       |> Repo.update
+    end
+  end
+  def delete_note([]) do
+    :done
+  end
+  def delete_note(_data = [h | t]) do
+    delete_note(%{text: h.text})
+    if t!=[] do
+      delete_note(t)
     end
   end
   def delete_note(data) when is_map(data) do
