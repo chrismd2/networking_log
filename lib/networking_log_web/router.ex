@@ -21,6 +21,7 @@ defmodule NetworkingLogWeb.Router do
 
     get "/", PageController, :index
     live "/data_management", DataManagementLive
+    live "/test", TestLive
   end
 
   # Other scopes may use custom stacks.
