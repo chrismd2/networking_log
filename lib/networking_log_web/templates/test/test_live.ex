@@ -1,4 +1,4 @@
-defmodule NetworkingLog.TestLive do
+defmodule NetworkingLogWeb.TestLive do
   use NetworkingLogWeb, :live_view
   use Phoenix.LiveView
   def mount(_params, _session, socket) do
