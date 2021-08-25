@@ -42,7 +42,7 @@
       class="absolute left-0 w-6 h-6 mb-2 bg-white border-2 rounded-full cursor-pointer transition transform duration-100 ease-linear"
       :class="[toggle === '1' ? 'translate-x-full border-green-400' : 'translate-x-0 border-gray-400']"></label>
         <input type="hidden" name="toggle" value="off" />
-    <input type="checkbox" id="toggle" name="toggle" class="hidden" @click="toggle === '0' ? toggle = '1' : toggle = '0'">
+    <input type="checkbox" class="opacity-0" id="toggle" name="toggle" class="hidden" @click="toggle === '0' ? toggle = '1' : toggle = '0'">
   </div>
 </div>
 </br>
