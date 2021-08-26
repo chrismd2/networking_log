@@ -1,9 +1,10 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
+
+@import "./phoenix.css";
 
 /* Alerts and form errors */
 .alert {
@@ -38,3 +39,5 @@
   display: block;
   margin: -1rem 0 2rem;
 }
+
+@import "./christenson.css";

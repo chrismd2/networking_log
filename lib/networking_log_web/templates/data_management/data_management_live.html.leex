@@ -25,7 +25,7 @@
     <ul>
       <%= for person <- @people do %>
         <div>
-          <button phx-click="select_person" value=<%=person.id%> >
+          <button class="selectable-btn" phx-click="select_person" value=<%=person.id%> >
             <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
           </button>
         </div>
@@ -75,7 +75,7 @@
 <table>
   <%= for note <- @notes do %>
     <div>
-      <button style="width: 100%" phx-click="select_note" value=<%=note.id%> >
+      <button class="selectable-btn" style="width: 100%" phx-click="select_note" value=<%=note.id%> >
         <%= note.text %>
       </button>
     </div>
