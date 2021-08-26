@@ -13,6 +13,13 @@ My color scheme:
    --dark: theme('colors.green.dark');
    --darkest: theme('colors.green.darkest');
  }
+ .blueorange {
+   --pale: theme('colors.blueorange.pale');
+   --light: theme('colors.blueorange.light');
+   --base: theme('colors.blueorange.base');
+   --dark: theme('colors.blueorange.dark');
+   --darkest: theme('colors.blueorange.darkest');
+ }
  .btn-text{
    padding: 4px;
  }

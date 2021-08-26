@@ -20,6 +20,13 @@ module.exports = {
         dark: '#5A8359',
         darkest: '#112810',
       },
+      blueorange: {
+        pale: '#F7E3D4',
+        light: '#FDDC22',
+        base: '#FC7307',
+        dark: '#183BF0',
+        darkest: '#342E09',
+      },
       'th-pale': 'var(--pale)',
       'th-light': 'var(--light)',
       'th-base': 'var(--base)',
