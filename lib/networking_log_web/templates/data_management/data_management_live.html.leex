@@ -78,7 +78,7 @@
 <table>
   <%= for note <- @notes do %>
     <div class="py-2">
-      <button class="selectable-btn" style="width: 100%" phx-click="select_note" value=<%=note.id%> >
+      <button class="default-btn <%=NetworkingLogWeb.DataManagementLive.selectable_format(@selected_note, note)%>" style="width: 100%" phx-click="select_note" value=<%=note.id%> >
         <%= note.text %>
       </button>
     </div>
