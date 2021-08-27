@@ -21,12 +21,12 @@
 </section>
 
 <section class="row">
-  <article class="column">
+  <article class="column" style="width: 30%">
     <p class="text-4xl">People</p>
     <ul>
       <%= for person <- @people do %>
         <div class="py-2">
-          <button class="default-btn <%=NetworkingLogWeb.DataManagementLive.selectable_format(@selected_person, person)%>" phx-click="select_person" value=<%=person.id%> >
+          <button class="default-btn <%=NetworkingLogWeb.DataManagementLive.selectable_format(@selected_person, person)%>" style="width: 100%" phx-click="select_person" value=<%=person.id%> >
             <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
           </button>
         </div>
