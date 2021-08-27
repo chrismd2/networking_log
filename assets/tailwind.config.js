@@ -27,6 +27,13 @@ module.exports = {
         dark: '#183BF0',
         darkest: '#342E09',
       },
+      harvest: {
+        pale: '#FDE911',
+        light: '#F1D3B1',
+        base: '#F4AF02',
+        dark: '#E57C03',
+        darkest: '#2F2C08',
+      },
       'th-pale': 'var(--pale)',
       'th-light': 'var(--light)',
       'th-base': 'var(--base)',

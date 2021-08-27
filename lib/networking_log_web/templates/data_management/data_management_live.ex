@@ -20,6 +20,25 @@ defmodule NetworkingLogWeb.DataManagementLive do
     "#{format_helper(name)} \n\t#{format_helper(phone)} \n\t#{format_helper(email)}"
   end
 
+  def selectable_format([], _element) do
+    "selectable-btn"
+  end
+  def selectable_format(list, element) do
+    IO.inspect(element, label: "element in selectable_format")
+    IO.inspect(list, label: "list in selectable_format")
+    [h|t] = list
+    IO.inspect(h.id == element.id, label: "bool val in selectable_format")
+    if h.id == element.id do
+      "selected-btn"
+    else
+      if t!=[] do
+        selectable_format(t, element)
+      else
+        "selectable-btn"
+      end
+    end
+  end
+
   @impl true
   def mount(_params, _session, socket) do
     mounted_socket = socket
