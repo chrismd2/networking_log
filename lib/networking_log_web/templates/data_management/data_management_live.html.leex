@@ -1,9 +1,10 @@
-<section class="phx-hero">
-  <h1><%= gettext "Add People!", name: "Phoenix" %></h1>
+
+<section class="phx-hero bg-th-pale">
+  <p class="text-5xl"><%= gettext "Add People!", name: "Phoenix" %></p>
   <%= f = form_for @changeset_person, "",
       phx_submit: "add_new_person" %>
     <div class = "field">
-      <section class="row">
+      <section class="row form-spacing">
         <span style="width: 30%">
           <%= text_input f, :name, placeholder: "Name", autocomplete: "off" %>
         </span>
@@ -14,29 +15,31 @@
           <%= text_input f, :email, placeholder: "Email", autocomplete: "off" %>
         </span>
       </section>
-      <%= submit "New Person", class: ""%>
+      <%= submit "New Person", class: "default-btn"%>
     </div>
   </form>
 </section>
 
 <section class="row">
   <article class="column">
-    <h2>People</h2>
+    <p class="text-4xl">People</p>
     <ul>
       <%= for person <- @people do %>
-        <div>
-          <button class="selectable-btn" phx-click="select_person" value=<%=person.id%> >
+        <div class="py-2">
+          <button class="default-btn <%=NetworkingLogWeb.DataManagementLive.selectable_format(@selected_person, person)%>" phx-click="select_person" value=<%=person.id%> >
             <%= NetworkingLogWeb.DataManagementLive.format_person_data(person) %>
           </button>
         </div>
       <% end %>
     </ul>
-    <button phx-click="delete" class = "">
-      Delete
-    </button>
+    <div class="py-2">
+      <button phx-click="delete" class="default-btn">
+        Delete
+      </button>
+    </div>
   </article>
   <article class="column">
-    <h2>More info</h2>
+    <p class="text-4xl">More info</p>
     <table>
       <%= for person <- @selected_person do %>
         <tr>
@@ -57,30 +60,32 @@
   </article>
 </section>
 </br>
-<section class="phx-hero">
-  <h1><%= gettext "Add Notes!", name: "Phoenix" %></h1>
+<section class="phx-hero bg-th-pale">
+  <p class="text-5xl"><%= gettext "Add Notes!", name: "Phoenix" %></p>
   <%= f = form_for @changeset_note, "",
   phx_submit: "add_new_note" %>
   <div class = "field">
-    <section class="row">
+    <section class="row form-spacing">
       <span style="width: 100%" >
         <%= text_input f, :text, placeholder: "Text", autocomplete: "off" %>
       </span>
     </section>
-    <%= submit "New Note", class: ""%>
+    <%= submit "New Note", class: "default-btn"%>
   </div>
 </form>
 </section>
-<h2>Notes</h2>
+<p class="text-4xl">Notes</p>
 <table>
   <%= for note <- @notes do %>
-    <div>
+    <div class="py-2">
       <button class="selectable-btn" style="width: 100%" phx-click="select_note" value=<%=note.id%> >
         <%= note.text %>
       </button>
     </div>
   <% end %>
-  <button phx-click="delete" class = "">
-    Delete
-  </button>
+  <div class="py-2">
+    <button phx-click="delete" class="default-btn">
+      Delete
+    </button>
+  </div>
 </table>

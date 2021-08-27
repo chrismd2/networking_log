@@ -1,11 +1,11 @@
 /*
-My color scheme:
-  #E3E6C0 - rgb(227, 230, 192)
-  #BEC645 - rgb(190, 198, 69)
-  #819D49 - rgb(129, 157, 73)
-  #5A8359 - rgb(90, 131, 89)
-  #112810 - rgb(17, 40, 16)
- */
+  My color scheme:
+    #E3E6C0 - rgb(227, 230, 192)
+    #BEC645 - rgb(190, 198, 69)
+    #819D49 - rgb(129, 157, 73)
+    #5A8359 - rgb(90, 131, 89)
+    #112810 - rgb(17, 40, 16)
+*/
  :root {
    --pale: theme('colors.green.pale');
    --light: theme('colors.green.light');
@@ -20,13 +20,25 @@ My color scheme:
    --dark: theme('colors.blueorange.dark');
    --darkest: theme('colors.blueorange.darkest');
  }
+ .harvest {
+   --pale: theme('colors.harvest.pale');
+   --light: theme('colors.harvest.light');
+   --base: theme('colors.harvest.base');
+   --dark: theme('colors.harvest.dark');
+   --darkest: theme('colors.harvest.darkest');
+ }
  .btn-text{
    padding: 4px;
  }
  .default-btn{
+   --border: 4px;
+   padding: var(--border);
    border: none;
    background-color: var(--dark);
    color: var(--pale);
+   --tw-ring-color: --tw-bg-opacity(0.5);
+   --tw-ring-color: var(--light);
+   box-shadow: var(--tw-ring-inset) 0 0 0 calc(var(--border) + var(--tw-ring-offset-width)) var(--tw-ring-color);
  }
 .selectable-btn{
   @apply default-btn;
@@ -34,11 +46,14 @@ My color scheme:
   padding: var(--border);
   background-color: var(--pale);
   color: var(--darkest);
-  --tw-ring-color: --tw-bg-opacity(0.5);
-  --tw-ring-color: var(--light);
-  box-shadow: var(--tw-ring-inset) 0 0 0 calc(var(--border) + var(--tw-ring-offset-width)) var(--tw-ring-color);
 }
 .selected-btn{
   @apply selectable-btn;
   background-color: var(--base);
+}
+.form-spacing{
+  @apply py-6 pb-4
+}
+.header-spacing{
+  @apply pb-10
 }
