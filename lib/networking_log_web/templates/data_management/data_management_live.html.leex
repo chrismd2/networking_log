@@ -62,6 +62,12 @@
   </article>
 </section>
 </br>
+<div class="py-2" align="center">
+  <button phx-click="connect" class="default-btn">
+    Connect
+  </button>
+</div>
+</br>
 <section class="phx-hero bg-th-pale">
   <p class="text-5xl"><%= gettext "Add Notes!", name: "Phoenix" %></p>
   <%= f = form_for @changeset_note, "",

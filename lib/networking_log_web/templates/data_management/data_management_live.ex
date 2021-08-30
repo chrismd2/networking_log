@@ -141,6 +141,16 @@ defmodule NetworkingLogWeb.DataManagementLive do
     {:noreply, socket}
   end
   @impl true
+  def handle_event("connect", params, socket) do
+    IO.inspect(params, label: "params in connect")
+    IO.inspect(socket, label: "socket in connect")
+    socket = socket
+    |> assign(:people, Nodes.get_all_people)
+    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
+    {:noreply, socket}
+  end
+  @impl true
   def handle_event("", params, socket) do
     IO.inspect(params, label: "params")
     IO.inspect(socket, label: "socket")
