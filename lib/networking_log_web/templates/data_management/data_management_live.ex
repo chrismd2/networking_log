@@ -159,6 +159,9 @@ defmodule NetworkingLogWeb.DataManagementLive do
       end
     end
   end
+  defp should_connect?(p_record, n_record) do
+    [] == Nodes.read_person_notes(p_record, n_record)
+  end
   defp connect_helper(person_list = [p_h | _] , note_list = [n_h | _]) do
     #  BUG: This is a very good spot to spawn processes
     #       to do updates based on different lists concurrently
@@ -173,7 +176,12 @@ defmodule NetworkingLogWeb.DataManagementLive do
       connect_helper([p_h], note_list)
     end
 
-    Nodes.update_person_notes(p_h, n_h)
+    IO.inspect(should_connect?(p_h, n_h), label: "should_connect?(p_h, n_h)")
+    if should_connect?(p_h, n_h) do
+      Nodes.update_person_notes(p_h, n_h)
+    else
+      Nodes.delete_person_notes(p_h, n_h)
+    end
     # |> IO.inspect(label: "tried updating ptn in connect_helper")
     # IO.inspect(p_h, label: "p_h in connect_helper")
     # IO.inspect(n_h, label: "n_h in connect_helper")

@@ -306,11 +306,12 @@ defmodule NetworkingLog.Nodes do
     |> Repo.update
   end
   def delete_person_notes(person, notes = %{text: _text})  do
-    read_person_notes(person, notes)
-    |> Enum.each( fn(ptn) ->
-                    PersonToNotes.changeset(ptn)
-                    |> Repo.delete
-                  end)
+    [ptn] = read_person_notes(person, notes)
+    Repo.delete(ptn)
+    # |> Enum.each( fn(ptn) ->
+    #                 PersonToNotes.changeset(ptn)
+    #                 |> Repo.delete
+    #               end)
   end
 
 
