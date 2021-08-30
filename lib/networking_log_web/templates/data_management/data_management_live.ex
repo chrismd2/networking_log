@@ -67,16 +67,22 @@ defmodule NetworkingLogWeb.DataManagementLive do
     IO.inspect(params, label: "params in handle_event(select_person)")
 
     {:ok, value} = Map.fetch(params, "value")
-    {value, _string_tail} = Integer.parse(value)
-    IO.inspect(value, label: "value in select_person")
-    currently_selected_person_list = socket.assigns.selected_person
-    new_person = Nodes.read_person(value)
+    if is_binary(value) do
+      {value, _string_tail} = Integer.parse(value)
+      IO.inspect(value, label: "value in select_person")
+      currently_selected_person_list = socket.assigns.selected_person
+      new_person = Nodes.read_person(value)
 
-    socket = socket
-    |> assign(:selected_person, select_person_helper(currently_selected_person_list, new_person))
+      socket = socket
+      |> assign(:selected_person, select_person_helper(currently_selected_person_list, new_person))
 
-    IO.inspect(socket, label: "new socket in handle_event(select_person)")
-    {:noreply, socket}
+      IO.inspect(socket, label: "new socket in handle_event(select_person)")
+      {:noreply, socket}
+    else
+      IO.write("ERROR: value is not an int\n")
+      IO.inspect(value, label: "actual value")
+      {:noreply, socket}
+    end
   end
   @impl true
   def handle_event("delete", _params, socket) do

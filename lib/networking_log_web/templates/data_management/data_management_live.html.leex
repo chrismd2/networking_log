@@ -44,15 +44,17 @@
       <%= for person <- @selected_person do %>
         <tr>
           <td>
-            <%= person.name %>
-            <%= NetworkingLogWeb.DataManagementLive.format_helper(person.phone) %>
-            <%= NetworkingLogWeb.DataManagementLive.format_helper(person.email) %>
-            <table>
+            <button class="info_card"  phx-click="select_person" value=<%=person.id%> >
+              <%= person.name %>
+              <%= NetworkingLogWeb.DataManagementLive.format_helper(person.phone) %>
+              <%= NetworkingLogWeb.DataManagementLive.format_helper(person.email) %>
               <%= for note <- person.notes do %>
                 </br>
-                <%= note.text %>
+                <p class="note-text">
+                  <%= note.text %>
+                </p>
               <% end %>
-            </table>
+            </button>
           </td>
         </tr>
       <% end %>
