@@ -46,7 +46,8 @@ defmodule NetworkingLog.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:phoenix_live_view, "~> 0.15.0"},
-      {:floki, ">= 0.30.0", only: :test}
+      {:floki, ">= 0.30.0", only: :test},
+      {:phx_gen_auth, "~> 0.7"}
     ]
   end
 
