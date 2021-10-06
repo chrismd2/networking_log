@@ -10,17 +10,7 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
   <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            Nav section
-          </ul>
-        </nav>
-      </section>
-    </header>
     <main role="main" class="container">
-      stuff
       <%= @inner_content %>
     </main>
   </body>

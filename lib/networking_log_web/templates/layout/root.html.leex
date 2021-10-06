@@ -11,7 +11,23 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   </head>
   <body class="bg-th-base text-th-darkest">
-    <header>
+    <header class="bg-th-pale">
+      <nav style="width: 100%" role="navigation">
+        <table>
+          <tr>
+            <td style="width: 0.5%">
+            </td>
+            <td>
+              <%= link "Home", to: Routes.page_path(@conn, :index) %>
+            </td>
+            <td>
+              <%= render "_user_menu.html", assigns %>
+            </td>
+            <td style="width: 0.5%">
+            </td>
+          </tr>
+        </table>
+      </nav>
     </header>
     <%= @inner_content %>
     <footer>
@@ -21,7 +37,6 @@
             <tr>
               <td>
                 <ul>
-                  Could have a link
                 </ul>
                 <p>Could have some tools</p>
               </td>
@@ -31,7 +46,6 @@
 
             </tr>
           </table>
-          <%= render "_user_menu.html", assigns %>
         </nav>
       </section>
     </footer>
