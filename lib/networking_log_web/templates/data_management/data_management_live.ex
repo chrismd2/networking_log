@@ -103,9 +103,16 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("add_new_person", params, socket) do
-    NetworkingLog.Nodes.create_person
-    # IO.inspect(params, label: "params")
-    # IO.inspect(socket, label: "socket")
+
+    uid = NetworkingLog.Accounts.get_user_by_session_token(Map.fetch!(socket.assigns, :user_token))
+    uid = uid.id
+    pperson = Map.fetch!(params, "person")
+    |> Map.put("user_id", uid)
+    params = Map.put(params, "person", pperson)
+
+    NetworkingLog.Nodes.create_person(params)
+    IO.inspect(params, label: "params")
+    IO.inspect(socket, label: "socket")
     socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
