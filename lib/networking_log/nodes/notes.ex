@@ -6,6 +6,7 @@ defmodule NetworkingLog.Nodes.Note do
 
   schema "notes" do
     field :text,              :string
+    field :user_id,           :integer
 
     many_to_many :people,     Nodes.Person, join_through: "person_to_notes", on_replace: :delete
     # many_to_many :notes,      Nodes.Note, join_through: "notes"
@@ -21,10 +22,12 @@ defmodule NetworkingLog.Nodes.Note do
     struct
     |> cast(%{}, [])
     |> put_assoc(:people, params)
+    |> put_assoc(:user_id, params)
   end
   def changeset(struct, params = %{}) do
+    IO.inspect(params, label: "params in changeset")
     struct
-    |> cast(params, [:text])
+    |> cast(params, [:text, :user_id])
     |> cast_assoc(
       :people,
       required: false

@@ -40,7 +40,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     mounted_socket = socket
     |> assign(:people, Nodes.get_all_people)
     |> assign(:notes, Nodes.get_all_notes)
@@ -49,8 +49,9 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(changeset_note: NetworkingLog.Nodes.Note.changeset(%NetworkingLog.Nodes.Note{}, %{}) )
     |> assign(selected_person: [])
     |> assign(selected_note: [])
+    |> assign(user_token: Map.fetch!(session, "user_token"))
 
-    # IO.inspect(mounted_socket, label: "new socket in mount")
+    IO.inspect(mounted_socket, label: "new socket in mount")
 
     {:ok, mounted_socket}
   end
@@ -102,7 +103,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("add_new_person", params, socket) do
-    NetworkingLog.Nodes.create_person(params)
+    NetworkingLog.Nodes.create_person
     # IO.inspect(params, label: "params")
     # IO.inspect(socket, label: "socket")
     socket = socket
@@ -112,8 +113,14 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("add_new_note", params, socket) do
-    # IO.inspect(params, label: "params in add_new_note")
-    # IO.inspect(socket, label: "socket in add_new_note")
+    IO.inspect(socket, label: "socket in add new note")
+    uid = NetworkingLog.Accounts.get_user_by_session_token(Map.fetch!(socket.assigns, :user_token))
+    uid = uid.id
+    pnote = Map.fetch!(params, "note")
+    |> Map.put("user_id", uid)
+    params = Map.put(params, "note", pnote)
+    IO.inspect(params, label: "params in add_new_note")
+    IO.inspect(socket, label: "socket in add_new_note")
     NetworkingLog.Nodes.create_note(params)
 
     socket = socket
