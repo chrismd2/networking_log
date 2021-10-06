@@ -23,7 +23,6 @@ defmodule NetworkingLogWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    live "/data_management", DataManagementLive
   end
 
   # Other scopes may use custom stacks.
@@ -65,6 +64,7 @@ defmodule NetworkingLogWeb.Router do
   scope "/", NetworkingLogWeb do
     pipe_through [:browser, :require_authenticated_user]
     live "/test", TestLive
+    live "/data_management", DataManagementLive
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
