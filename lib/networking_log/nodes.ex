@@ -240,17 +240,24 @@ defmodule NetworkingLog.Nodes do
     :done
   end
   def delete_note(_data = [h | t]) do
-    delete_note(%{text: h.text})
+    if Map.has_key?(h, :id) do
+      Repo.delete(Repo.get!(Note, h.id))
+    else
+      delete_note(%{text: h.text})
+    end
     if t!=[] do
       delete_note(t)
     end
   end
   def delete_note(data) when is_map(data) do
+    IO.inspect(data, label: "data in delete_note")
     if(!Map.has_key?(data, :text)) do
       IO.write("data is invalid\n")
       IO.inspect(data, label: "data provided")
     else
-      get_note(data)
+      note = get_note(data)
+      IO.inspect(note, label: "note")
+      note
       |> Note.changeset(%{})
       |> Repo.delete
     end
