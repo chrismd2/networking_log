@@ -9,6 +9,7 @@ defmodule NetworkingLog.Accounts.User do
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
+    many_to_many :roles, NetworkingLog.Roles.Role, join_through: "user_roles", on_replace: :delete
     timestamps()
   end
 
