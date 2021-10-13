@@ -74,9 +74,14 @@ defmodule NetworkingLog.Accounts do
 
   """
   def register_user(attrs) do
-    %User{}
+    {status, changeset} = %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
+    if status == :error do
+      IO.inspect(changeset.errors, label: "ERROR while registering user")
+    end
+
+    {status, changeset}
   end
 
   @doc """

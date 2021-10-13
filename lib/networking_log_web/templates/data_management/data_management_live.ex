@@ -41,15 +41,17 @@ defmodule NetworkingLogWeb.DataManagementLive do
 
   @impl true
   def mount(_params, session, socket) do
+    user_token = Map.fetch!(session, "user_token")
+
     mounted_socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(user_token: user_token)
+    |> assign(:people, Nodes.get_people(user_token))
+    |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(changeset_person: NetworkingLog.Nodes.Person.changeset(%NetworkingLog.Nodes.Person{}, %{}) )
     |> assign(changeset_note: NetworkingLog.Nodes.Note.changeset(%NetworkingLog.Nodes.Note{}, %{}) )
     |> assign(selected_person: [])
     |> assign(selected_note: [])
-    |> assign(user_token: Map.fetch!(session, "user_token"))
 
     IO.inspect(mounted_socket, label: "new socket in mount")
 

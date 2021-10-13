@@ -24,8 +24,43 @@ defmodule NetworkingLog.Nodes do
     q = from p in Person
     Repo.all(q)
   end
+  defp is_role?([] = _roles_list, _role) do
+    false
+  end
+  defp is_role?([h|t] = _roles_list, role) do
+    if h.name == role do
+      true
+    else
+      is_role?(t, role)
+    end
+  end
+  def get_people(user_token) do
+    user = NetworkingLog.Accounts.get_user_by_session_token(user_token)
+    |> Repo.preload(:roles)
+    q = if is_role?(user.roles, "admin") do
+      from p in Person,
+      where: is_nil(p.user_id)
+    else
+      from p in Person,
+      where: p.user_id == ^user.id
+    end
+    Repo.all(q)
+  end
   def get_all_notes do
     q = from n in Note
+    Repo.all(q)
+  end
+  def get_notes(user_token) do
+    user = NetworkingLog.Accounts.get_user_by_session_token(user_token)
+    |> Repo.preload(:roles)
+    q = if is_role?(user.roles, "admin") do
+        from n in Note,
+        where: is_nil(n.user_id)
+    else
+        from n in Note,
+        where: n.user_id == ^user.id
+    end
+    IO.inspect(user, label: "user in get notes")
     Repo.all(q)
   end
   def get_all_person_to_notes do
