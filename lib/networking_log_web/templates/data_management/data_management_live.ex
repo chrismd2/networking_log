@@ -89,14 +89,15 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("delete", _params, socket) do
+    user_token = Map.fetch!(socket.assigns, :user_token)
     # IO.inspect(params, label: "params in delete")
     # IO.inspect(socket, label: "socket in delete")
     # IO.inspect(socket.assigns.selected_person, label: "selected_person buttons for deletion")
     Nodes.delete_person(socket.assigns.selected_person)
     Nodes.delete_note(socket.assigns.selected_note)
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:people, Nodes.get_people(user_token))
+    |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected_person, [])
     |> assign(:selected_note, [])
@@ -105,6 +106,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("add_new_person", params, socket) do
+    user_token = Map.fetch!(socket.assigns, :user_token)
 
     uid = NetworkingLog.Accounts.get_user_by_session_token(Map.fetch!(socket.assigns, :user_token))
     uid = uid.id
@@ -116,12 +118,13 @@ defmodule NetworkingLogWeb.DataManagementLive do
     IO.inspect(params, label: "params")
     IO.inspect(socket, label: "socket")
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
+    |> assign(:people, Nodes.get_people(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     {:noreply, socket}
   end
   @impl true
   def handle_event("add_new_note", params, socket) do
+    user_token = Map.fetch!(socket.assigns, :user_token)
     IO.inspect(socket, label: "socket in add new note")
     uid = NetworkingLog.Accounts.get_user_by_session_token(Map.fetch!(socket.assigns, :user_token))
     uid = uid.id
@@ -133,8 +136,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
     NetworkingLog.Nodes.create_note(params)
 
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:people, Nodes.get_people(user_token))
+    |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
 
     # IO.inspect(socket, label: "new socket in add_new_note")
@@ -204,6 +207,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("connect", params, socket) do
+    user_token = Map.fetch!(socket.assigns, :user_token)
     assigns = socket.assigns
     # IO.inspect(assigns, label: "assigns in connect")
     # IO.inspect(assigns.selected_person, label: "assigns.selected_person in connect")
@@ -215,8 +219,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
     # IO.inspect(assigns.selected_person, label: "originally selected person")
 
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:people, Nodes.get_people(user_token))
+    |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected_person, update_selected(assigns.selected_person))
     # IO.inspect(socket, label: "modified socket")
@@ -224,11 +228,12 @@ defmodule NetworkingLogWeb.DataManagementLive do
   end
   @impl true
   def handle_event("", params, socket) do
+    user_token = Map.fetch!(socket.assigns, :user_token)
     IO.inspect(params, label: "params")
     IO.inspect(socket, label: "socket")
     socket = socket
-    |> assign(:people, Nodes.get_all_people)
-    |> assign(:notes, Nodes.get_all_notes)
+    |> assign(:people, Nodes.get_people(user_token))
+    |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     {:noreply, socket}
   end
