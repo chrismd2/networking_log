@@ -19,10 +19,11 @@ defmodule NetworkingLog.Nodes.Note do
   end
 
   def changeset_assoc(struct, params) when(is_list(params)) do
+    [record | t] = params
+    a_map = %{user_id: record.user_id}
     struct
-    |> cast(%{}, [])
+    |> cast(a_map, [:user_id])
     |> put_assoc(:people, params)
-    |> put_assoc(:user_id, params)
   end
   def changeset(struct, params = %{}) do
     IO.inspect(params, label: "params in changeset")
