@@ -39,7 +39,8 @@ defmodule NetworkingLog.Nodes do
     |> Repo.preload(:roles)
     q = if is_role?(user.roles, "admin") do
       from p in Person,
-      where: is_nil(p.user_id)
+      where: is_nil(p.user_id) or
+             p.user_id == ^user.id
     else
       from p in Person,
       where: p.user_id == ^user.id
@@ -55,7 +56,8 @@ defmodule NetworkingLog.Nodes do
     |> Repo.preload(:roles)
     q = if is_role?(user.roles, "admin") do
         from n in Note,
-        where: is_nil(n.user_id)
+        where: is_nil(n.user_id) or
+               n.user_id == ^user.id
     else
         from n in Note,
         where: n.user_id == ^user.id
