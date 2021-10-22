@@ -1,5 +1,5 @@
 /config/*.exs
-/priv/repo/seeds.exs
+priv/repo/seeds.exs
 /.env
 
 # The directory Mix will write compiled artifacts to.
