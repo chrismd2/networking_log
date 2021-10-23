@@ -26,3 +26,6 @@ rm $BUILD_PATH/bin/networking_log-old
 
 # Call migrations in production
 # ../electric-journal/bin/networking_log eval "NetworkingLog.Release.migrate"
+
+# push to digital ocean
+(cd $BUILD_PATH; git add .; git commit -m $(date +"%Y%m%d%H%M"); git push origin)
