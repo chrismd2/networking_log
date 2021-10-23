@@ -210,8 +210,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
     user_token = Map.fetch!(socket.assigns, :user_token)
     assigns = socket.assigns
     # IO.inspect(assigns, label: "assigns in connect")
-    # IO.inspect(assigns.selected_person, label: "assigns.selected_person in connect")
-    # IO.inspect(assigns.selected_note, label: "assigns.selected_note in connect")
+    IO.inspect(assigns.selected_person, label: "assigns.selected_person in connect")
+    IO.inspect(assigns.selected_note, label: "assigns.selected_note in connect")
     connect_helper(assigns.selected_person, assigns.selected_note)
     update_selected(assigns.selected_person)
     # |> IO.inspect(label: "update_selected return value")
@@ -223,6 +223,7 @@ defmodule NetworkingLogWeb.DataManagementLive do
     |> assign(:notes, Nodes.get_notes(user_token))
     |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
     |> assign(:selected_person, update_selected(assigns.selected_person))
+    |> assign(:selected_note, update_selected(assigns.selected_note))
     # IO.inspect(socket, label: "modified socket")
     {:noreply, socket}
   end
