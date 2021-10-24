@@ -205,6 +205,12 @@ defmodule NetworkingLogWeb.DataManagementLive do
     # IO.inspect(p_h, label: "p_h in connect_helper")
     # IO.inspect(n_h, label: "n_h in connect_helper")
   end
+  defp connect_helper(p_list, []) do
+    IO.write("no notes provided\n")
+  end
+  defp connect_helper([], n_list) do
+    IO.write("no people provided\n")
+  end
   @impl true
   def handle_event("connect", params, socket) do
     user_token = Map.fetch!(socket.assigns, :user_token)
@@ -221,7 +227,8 @@ defmodule NetworkingLogWeb.DataManagementLive do
     socket = socket
     |> assign(:people, Nodes.get_people(user_token))
     |> assign(:notes, Nodes.get_notes(user_token))
-    |> assign(:person_to_notes, Nodes.get_all_person_to_notes)
+    sockt = socket
+    |> assign(:person_to_notes, Nodes.get_person_to_notes(socket.assigns.people, socket.assigns.notes))
     |> assign(:selected_person, update_selected(assigns.selected_person))
     |> assign(:selected_note, update_selected(assigns.selected_note))
     # IO.inspect(socket, label: "modified socket")

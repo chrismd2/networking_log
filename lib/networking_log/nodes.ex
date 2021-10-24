@@ -65,6 +65,41 @@ defmodule NetworkingLog.Nodes do
     IO.inspect(user, label: "user in get notes")
     Repo.all(q)
   end
+  defp get_ptn_helper(ptn, [] = _p_list, [] = _n_list) do
+    nil
+  end
+  defp get_ptn_helper(ptn, [p_h | p_t] = _p_list, [] = _n_list) do
+    if ptn.person_id == p_h.id do
+      ptn
+    else
+      get_ptn_helper(ptn, p_t, [])
+    end
+  end
+  defp get_ptn_helper(ptn, [] = _p_list, [n_h | n_t] = _n_list) do
+    if ptn.note_id == n_h.id do
+      ptn
+    else
+      get_ptn_helper(ptn, [], n_t)
+    end
+  end
+  defp get_ptn_helper(ptn, [p_h | p_t] = _p_list, [n_h | n_t] = _n_list) do
+    if ptn.person_id == p_h.id || ptn.note_id == n_h.id do
+      ptn
+    else
+      get_ptn_helper(ptn, p_t, n_t)
+    end
+  end
+  def get_person_to_notes(p_list, n_list) do
+    IO.inspect(p_list, label: "p_list in get_person_notes")
+    IO.inspect(n_list, label: "n_list in get_person_notes")
+    q = from ptn in PersonToNotes
+    r = Repo.all(q)
+    |> Enum.map(fn(ptn) -> get_ptn_helper(ptn, p_list, n_list) end)
+    |> Enum.reject(fn(ptn) -> is_nil(ptn) end)
+    # |> Repo.preload(:person)
+    IO.inspect(r, label: "return value in get_person_notes")
+    r
+  end
   def get_all_person_to_notes do
     q = from ptn in PersonToNotes
     Repo.all(q)
