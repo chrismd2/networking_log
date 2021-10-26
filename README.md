@@ -1,5 +1,11 @@
 # NetworkingLog
 
+To push to remote deployment which is managed by a git repo
+
+* remotely: `git config receive.denyCurrentBranch warn`
+* locally:  either `git push origin` or `./build.sh`
+* remotely: `git config receive.denyCurrentBranch deny`
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
